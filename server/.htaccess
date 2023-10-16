@@ -1,0 +1,9 @@
+DirectoryIndex topdev.pl
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteCond $1 !^(index\.pl|uploads|robots\.txt|favicon\.ico)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /index.pl/$1 [L,QSA]
+</IfModule>
