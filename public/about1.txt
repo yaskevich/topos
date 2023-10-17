@@ -1,0 +1,12 @@
+<p>
+<strong>Τόπος</strong> – the tool for exploring and visualizing geospatial data about place names located on the territory of Republic of Belarus.</p>
+<p><strong>Current status</strong>: working prototype (pre-pre-alpha)</p>
+<p><strong>Datasets</strong> included:</p>
+<ul>
+	<li>List of place names, with <strong>coordinates</strong> (90%)</li>
+	<li>Current <strong>administrative division</strong> of the state – boroughs, cities, districts, and regions (100%)</li>
+	<li><strong>Additional layers:</strong> <br/> (topography, railway system, water resources – from OpenStreetMap)</li>
+</ul>
+
+<p><strong>Under the hood</strong>: Perl (Mojolicious), JavaScript (D3, JQuery), HTML/CSS (Twitter Bootstrap)</p>
+<p></p>
