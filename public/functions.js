@@ -1,7 +1,38 @@
 var acrDefault;
 var arcOver;
 var lock = 0;
-// kashesandr : http://stackoverflow.com/questions/10692100/invoke-a-callback-at-the-end-of-a-transition	
+// https://gist.github.com/wrobstory/7612013
+var d3tooltip = function (accessor) {
+    return function (selection) {
+        var d3tooltipDiv;
+        var body = d3.select('body').node();
+        selection.on("mouseover", function (d, i) {
+            d3.select('body').selectAll('div.d3tooltip').remove();
+            d3tooltipDiv = d3.select('body').append('div').attr('class', 'd3tooltip');
+            var coords = d3.mouse(body);
+            d3tooltipDiv.style('left', (coords[0] + 10) + 'px')
+                .style('top', (coords[1] - 15) + 'px')
+                .style('position', 'absolute')
+                .style('z-index', 1001);
+            // var d3tooltipText = accessor(d, i) || '';
+            // d3tooltipDiv.style('width', function (d, i) { return (d3tooltipText.length > 80) ? '300px' : null; })
+            //     .html(d3tooltipText);
+        })
+            .on('mousemove', function (d, i) {
+                var coords = d3.mouse(body);
+                d3tooltipDiv.style('left', (coords[0] + 10) + 'px')
+                    .style('top', (coords[1] - 15) + 'px');
+                var d3tooltipText = accessor(d, i) || '';
+                if (d3tooltipText.length) {
+                    d3tooltipDiv.html(d3tooltipText);
+                }
+            })
+            .on("mouseout", function (d, i) {
+                d3tooltipDiv.remove();
+            });
+    };
+};
+// kashesandr : http://stackoverflow.com/questions/10692100/invoke-a-callback-at-the-end-of-a-transition
 function endall(transition, callback) {
     if (transition.size() === 0) { callback() }
     var n = 0;
@@ -150,7 +181,6 @@ function kmeans() {
 
     initProblem();
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function osm_layer_put(where, projection_path, jsonfile, svgclass) {
     d3.json(jsonfile, function (data) {
         where
@@ -159,7 +189,7 @@ function osm_layer_put(where, projection_path, jsonfile, svgclass) {
             .enter().append('path')
             .attr('class', svgclass)
             .attr('d', projection_path)
-            .call(d3.helper.d3tooltip(
+            .call(d3tooltip(
                 function (d, i) {
                     return d.properties["NAME"];
                 }
@@ -258,7 +288,7 @@ function city_put(svg, projection, city, number, object_node, citydot_radius, mu
 
 
 
-    new_g.call(d3.helper.d3tooltip(
+    new_g.call(d3tooltip(
         function (d, i) {
 
             var render = Mustache.render(mustache_template,
@@ -590,7 +620,7 @@ function bubble(data, placeholder) {
         // .attr("class", "node")
         .attr("class", function (d) { return "node group" + d.group; })
         .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; })
-        .call(d3.helper.d3tooltip( //!!
+        .call(d3tooltip( //!!
             function (d, i) {
                 d3.select('.d3tooltip').style("background-color", d.color);
                 // return  '<div style="min-height:100%; height:100%;font-weight:bold;background-color:' + d.color + '">' + d.key + "&nbsp;&nbsp;&nbsp;" + d.values + '</div>';
@@ -1129,7 +1159,7 @@ function belarus_districts_stat(what2show, color_sceheme_num, path, districts, p
             // return quantize( districts_db_data[osm].pop); 
             // })
             .attr('d', path)
-            .call(d3.helper.d3tooltip(
+            .call(d3tooltip(
                 function (d, i) {
                     // console.log(JSON.stringify(d));
                     // return num_inbin + '::' + resultstring;
@@ -1243,7 +1273,7 @@ function magdeburg(projection, placeholder, titler, side, bar, template, quick_m
         var every = categorized
             .enter()
             .append("g")
-            .call(d3.helper.d3tooltip(
+            .call(d3tooltip(
                 function (d, i) {
                     var hname = d.histname_be ? (d.histname_be + " (" + d.name_be + ")") : d.name_be;
 
@@ -1499,7 +1529,7 @@ function anno_urbis_conditae(projection, placeholder, titler, board, bar, templa
             .sort(function (a, b) { return d3.descending(a.est_date, b.est_date); })
             .enter()
             .append('g')
-            .call(d3.helper.d3tooltip(
+            .call(d3tooltip(
                 function (d, i) {
                     return Mustache.render(template, { img: d.place_id + d.ext, name: d.name_be, est_date: d.est_date, magd_date: d.magd_date, pop: d.pop, estflag: old_ages_flags[get_old_age(d.est_date)], magdflag: old_ages_flags[get_old_age(d.magd_date)] });
                 }
@@ -1630,7 +1660,7 @@ function hexbin_renaming(projection, width, height, svg, titler, board, bar, qui
             // .attr("d", function(d) { return hexbin.hexagon(radius(d.length*2.5)); })
             .attr("d", function (d) { return hexbin.hexagon(); })
             .attr("transform", function (d) { return "translate(" + d.x + "," + d.y + ")"; })
-            .call(d3.helper.d3tooltip(
+            .call(d3tooltip(
                 function (d, i) {
                     var num_inbin = d.length;
                     var resultstring = '';
@@ -2088,7 +2118,6 @@ function viz_renaming(projection, svg, titler, board, bar, quick) {
         }
         /////////////////////////////////////////////////////////////////////////
 
-
         var star_duration = quick ? 0 : 2000;
         var size = 15;
         svg.selectAll('.stars')
@@ -2096,7 +2125,7 @@ function viz_renaming(projection, svg, titler, board, bar, quick) {
             .sort(function (a, b) { return d3.descending(a.ren_date, b.ren_date); })
             .enter()
             .append('g')
-            .call(d3.helper.d3tooltip(
+            .call(d3tooltip(
                 function (d, i) {
                     return "<b>" + d.name_be + "</b><br/>" + l8n('earlr') + ": " + d.names_pre_be.replace(/\|/g, ", ") + "<br/>" + l8n('yr') + ": " + d.ren_date;
                 }
@@ -2297,7 +2326,7 @@ function mapdots(projection, svg, board, loaded_data, pack) {
             .data(loaded_data)
             .enter()
             .append("g")
-            .call(d3.helper.d3tooltip(
+            .call(d3tooltip(
                 function (d, i) {
                     // d3.select('.d3tooltip').style("background-color", colorscheme_hash[d.name_be] || outof_color );
 

@@ -1,134 +1,86 @@
-
+.hidden {
+  display: none;
+}
 .template_div_table {
-	float:right;
-	margin-left:3px;
+  float: right;
+  margin-left: 3px;
 }
 .template_small_flag {
-	height: 16px;
+  height: 16px;
 }
 .template_coat_div {
-height:100%;
-width:75px;
+  height: 100%;
+  width: 75px;
 }
 .small_flag_inline {
-	width:18px; height:13px;border: 1px solid lightgray;
+  width: 18px;
+  height: 13px;
+  border: 1px solid lightgray;
 }
-
-
 .key path {
   display: none;
 }
-
 .key line {
   stroke: #000;
   shape-rendering: crispEdges;
 }
-
 .label-text {
-    alignment-baseline: middle;
-	font: 12px Georgia, serif;
-    fill: #393939;
-	pointer-events: none;
-	/* fill:none;fill-opacity:1;stroke:#000000;stroke-width:3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1; */
-	 /* -webkit-filter: drop-shadow( 1px 1px 5px #000 );
-      filter: drop-shadow( 1px 1px 5px #000 );  */
-	  /* Same syntax as box-shadow */
-	  /* http://stackoverflow.com/questions/6088409/svg-drop-shadow-using-css3 */
-	  
-	/* -webkit-box-shadow: 1px 1px 5px #000;
-	box-shadow: 1px 1px 5px #000; */
-	/* <- didnt work */
-	/* filter: url(#drop-shadow); */
-	
+  font: 12px Georgia, serif;
+  fill: #393939;
+  pointer-events: none;
 }
-
 .label-line {
-    stroke-width: 1;
-    stroke: #393939;
-	pointer-events: none;
+  stroke-width: 1;
+  stroke: #393939;
+  pointer-events: none;
 }
-
 .pass {
-	pointer-events: none;
+  pointer-events: none;
 }
-
 .label-circle {
-    fill: #393939;
-	pointer-events: none;
+  fill: #393939;
+  pointer-events: none;
 }
-
 body {
-	background-color: #E7E7E7 !important;
+  background-color: #e7e7e7 !important;
 }
-	
-
-
-#map {
-       /*  position: fixed;
-        left: 0px;
-        right: 0px;
-        top: 0px;
-        bottom: 0px; */
-      }
-
-.sq {
-	/* font: 18px 'Book Antiqua'; */
-}
-
 .sq rect {
   fill: none;
   stroke: black;
-  /* stroke: #fff; */
-  /* stroke: yellow; */
 }
-
-.abc{
-	font: 72px "Blackadder ITC",  Arial, sans-serif;
- }
- 
+.abc {
+  /* font: 72px 'Blackadder ITC', Arial, sans-serif; */
+  font: 72px 'Almendra SC', Arial, sans-serif;
+}
 .bar_city {
-	/* font-size: 1em; 
-	font-face: Mistral;
-	*/
-	font: 48px "Mistral",  Arial, sans-serif;
- }
- 
- .citynames {
-	text-anchor: middle;
-	font-size: 0.7em;
-	font-face: 'PT Sans Narrow';
- }
- 
-#head{
-	font: 20px Georgia, serif;
-	text-transform: uppercase;
-	text-align: center;
-	vertical-align: middle;
-	width:800px;
-	margin-top:-10px;
-	margin-bottom:5px;
+  font: 48px 'Mistral', Arial, sans-serif;
 }
-#title svg{
-	display: block; 
-	margin: auto;
+.citynames {
+  text-anchor: middle;
+  font-size: 0.7em;
+  font-family: 'PT Sans Narrow';
 }
-#title svg text{
-	text-anchor: middle;
-	/* font: italic 100% Georgia, serif; */
-	font: 20px Georgia, serif;
-	text-transform: uppercase;
-	
-	 
+#head {
+  font: 20px Georgia, serif;
+  text-transform: uppercase;
+  text-align: center;
+  vertical-align: middle;
+  width: 800px;
+  margin-top: -10px;
+  margin-bottom: 5px;
 }
-
-
+#title svg {
+  display: block;
+  margin: auto;
+}
+#title svg text {
+  text-anchor: middle;
+  font: 20px Georgia, serif;
+  text-transform: uppercase;
+}
 .folist {
-	/* font: 18px 'Book Antiqua'; */
-	/* font: 16px Georgia, serif; */
-	font: 16px Georgia, serif;
+  font: 16px Georgia, serif;
 }
-
- 
 .folist .left {
   float: left;
   width: 140px;
@@ -136,236 +88,158 @@ body {
   margin: 2px 10px;
   display: inline;
 }
-
 .folist .right {
   float: left;
   text-align: left;
   margin: 2px 10px;
   display: inline;
 }
-
 .unselectable {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-	cursor: default;
-	pointer-events: none;
-	}
- .renamebarchart {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+  pointer-events: none;
+}
+.renamebarchart {
   fill: black;
 }
 .renamebarchart2 {
-  /* stroke: black; */
-   stroke-dasharray: 4,8;
-  fill:black;
+  stroke-dasharray: 4, 8;
+  fill: black;
 }
-
-/* .renamebarchart2:hover {
-  fill: brown;
-}
-
-.renamebarchart:hover {
-  fill: brown;
-} */
-
 .rnbc_axis {
   font: 10px sans-serif;
 }
-
 .rnbc_axis path,
 .rnbc_axis line {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
 }
-
 .x.rnbc_axis path {
   display: none;
 }
- 
-
-.q0-9 { fill:rgb(247,251,255); }
-.q1-9 { fill:rgb(222,235,247); }
-.q2-9 { fill:rgb(198,219,239); }
-.q3-9 { fill:rgb(158,202,225); }
-.q4-9 { fill:rgb(107,174,214); }
-.q5-9 { fill:rgb(66,146,198); }
-.q6-9 { fill:rgb(33,113,181); }
-.q7-9 { fill:rgb(8,81,156); }
-.q8-9 { fill:rgb(8,48,107); }
- 
-  
- /* circle {
-  fill: #ccc;
-  
-} */
-
+.q0-9 {
+  fill: rgb(247, 251, 255);
+}
+.q1-9 {
+  fill: rgb(222, 235, 247);
+}
+.q2-9 {
+  fill: rgb(198, 219, 239);
+}
+.q3-9 {
+  fill: rgb(158, 202, 225);
+}
+.q4-9 {
+  fill: rgb(107, 174, 214);
+}
+.q5-9 {
+  fill: rgb(66, 146, 198);
+}
+.q6-9 {
+  fill: rgb(33, 113, 181);
+}
+.q7-9 {
+  fill: rgb(8, 81, 156);
+}
+.q8-9 {
+  fill: rgb(8, 48, 107);
+}
 .node:hover circle {
   fill: orange;
-  cursor: pointer; cursor: hand;
+  cursor: pointer;
+  cursor: hand;
 }
-
 .node text {
-  font: 24px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font: 24px 'Helvetica Neue', Helvetica, Arial, sans-serif;
   text-anchor: middle;
   pointer-events: none;
 }
-
-
 .d3tooltip img {
-	/* max-height: 50px; */
-	max-height: 100%;
-	max-width: 75px;
+  max-height: 100%;
+  max-width: 75px;
 }
-
-
-/* @media (min-width: 1200px) {
-    .d3tooltip{
-        max-width: 450px;
-    }
-} */
-
-
 .d3tooltip {
-/* background-color:rgba(68,136,187,0.5);
-background-color:#FFFFFF; */
-/* background-color: gold; */
-/*  font-family: PT Sans Narrow;
- margin: 10px; */
-/* background: rgba(0, 0, 0, 0.9);
-  color: #fff; */
-  background-color: #FCFCFC;
+  background-color: #fcfcfc;
   border: 1px solid gray;
-  /* background-color: white; */
-  
-/* padding-left: 10px; 
-padding-top: 10px; */
-padding: 5px;
-
-/* height: 120px;
-width: 150px; */
-
-
- /* max-height: 150px;
- max-width: 450px;
- */
- 
-  
- 
-height: auto; 
-width: auto; 
-
-min-height: fit-content;
-min-width: fit-content;
-
--webkit-border-radius:10px;
--moz-border-radius:10px;
-border-radius:10px; 
-/* overflow:auto; */
-
+  padding: 5px;
+  height: auto;
+  width: auto;
+  min-height: fit-content;
+  min-width: fit-content;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
 }
-
 .rail {
-	fill: lightyellow;
-	stroke: black;
-}	
-.water {
-	fill: lightyellow;
-	stroke: #888;
+  fill: lightyellow;
+  stroke: black;
 }
-		
+.water {
+  fill: lightyellow;
+  stroke: #888;
+}
 .stroke {
   fill: none;
   stroke: #000;
-  stroke-width: .5;
+  stroke-width: 0.5;
 }
-
 .boundary {
   fill: none;
   stroke: #888;
   stroke-linejoin: round;
 }
 ok {
-	fill: #3914AF;
+  fill: #3914af;
 }
-
 bad {
-	fill: #FFD073;
+  fill: #ffd073;
 }
-/*
-svg {
-  border-style: solid;
-  border-width: 1px;
-  border-color: #ccc;
+svg:title {
+  background-color: yellow;
 }
-*/
-svg:title{
-	background-color: yellow;
-}
-
 .hexagons path {
   stroke: #fff;
 }
-
 .ditrict:hover {
-	fill: yellow;
-    opacity: 0.7;
-	stroke:black;
-	stroke-width: 2;
-  }
-  
+  fill: yellow;
+  opacity: 0.7;
+  stroke: black;
+  stroke-width: 2;
+}
 .district {
-	/*  fill: orange; */
-	fill: lightyellow;
-	stroke: #888;
+  /*  fill: orange; */
+  fill: lightyellow;
+  stroke: #888;
 }
-
 .state {
-	// fill: orange;
-	fill: lightyellow;
-	stroke: #888;
+  fill: lightyellow;
+  stroke: #888;
 }
-
 body {
-	/* 
-	background-color:lightgray;		
-	background-color:#7D949B;		
-	background-color:#337AB7;
-	*/
-	background-color:white;		
+  background-color: white;
 }
-	
-/*
-.header {
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-*/
-
 .footer {
   border-top: 1px solid #444;
   padding-top: 20px;
   margin-top: 20px;
-  color: #999
+  color: #999;
 }
-
 .p {
   text-align: center;
   padding-top: 120px;
 }
-
 .p a {
   text-decoration: underline;
   color: blue;
 }
-
 .drawline {
   fill: none;
-  /* stroke: #000; */
-  /* stroke: red; */
   stroke: black;
   stroke-width: 5px;
   stroke-linejoin: round;
