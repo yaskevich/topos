@@ -61,11 +61,10 @@ body {
   font-family: 'PT Sans Narrow';
 }
 #head {
-  font: 20px Georgia, serif;
+  /* font: 20px Georgia, serif; */
+  font-size: 20px;
   text-transform: uppercase;
   text-align: center;
-  vertical-align: middle;
-  width: 800px;
   margin-top: -10px;
   margin-bottom: 5px;
 }
@@ -75,12 +74,12 @@ body {
 }
 #title svg text {
   text-anchor: middle;
-  font: 20px Georgia, serif;
+  /* font: 20px Georgia, serif; */
   text-transform: uppercase;
 }
-.folist {
+/* .folist {
   font: 16px Georgia, serif;
-}
+} */
 .folist .left {
   float: left;
   width: 140px;
@@ -112,7 +111,7 @@ body {
   fill: black;
 }
 .rnbc_axis {
-  font: 10px sans-serif;
+  font-size: 10px;
 }
 .rnbc_axis path,
 .rnbc_axis line {
@@ -156,7 +155,8 @@ body {
   cursor: hand;
 }
 .node text {
-  font: 24px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  /* font: 24px 'Helvetica Neue', Helvetica, Arial, sans-serif; */
+  font-size: 24px;
   text-anchor: middle;
   pointer-events: none;
 }
