@@ -28,6 +28,17 @@ const extDir = path.join(__dirname, '..', '..', 'colours');
 const extAssetsDir = path.join(extDir, 'assets');
 const extCoatsDir = path.join(extDir, 'coat');
 
+const modules = [
+  ['d3', 'dist'],
+  ['d3-tile', 'dist'],
+  ['d3-hexbin', 'build'],
+  ['jquery', 'dist'],
+  ['topojson-client', 'dist'],
+  ['mustache'],
+  ['bootstrap', 'dist'],
+  ['bootstrap-icons', 'font']
+];
+
 const LocalStrategy = passportLocal.Strategy;
 // console.log(process.env.DB_PATH);
 if (process.env.DB_PATH && fs.existsSync(process.env.DB_PATH)) {
@@ -88,6 +99,7 @@ if (process.env.DB_PATH && fs.existsSync(process.env.DB_PATH)) {
   app.use('/colors', express.static(extDir));
   app.use('/coat', express.static(extCoatsDir));
   app.use('/data', express.static(dataDir));
+  app.use(modules.map((x) => express.static(path.join(__dirname, 'node_modules', ...x))));
 
   // temporary fix https://github.com/jaredhanson/passport/issues/907
   app.use(passportMiddleware);
