@@ -1,0 +1,194 @@
+{
+    "languages": [
+        "en",
+        "be"
+    ],
+    "labelme": [
+        "Alyaxey Yaskevich",
+        "Аляксей Яскевіч"
+    ],
+    "nameor": [
+        "Old Ruthenia",
+        "Даўняя Русь"
+    ],
+    "namegd": [
+        "Grand Duchy",
+        "ВКЛ"
+    ],
+    "namerp": [
+        "Commonwealth of Two Nations",
+        "Рэч Паспалітая"
+    ],
+    "namere": [
+        "Russian Empire",
+        "Расійская імперыя"
+    ],
+    "namesu": [
+        "Soviet Union",
+        "Савецкі Саюз"
+    ],
+    "nameby": [
+        "Belarus",
+        "Беларусь"
+    ],
+    "titlecity": [
+        "Status of a City (Borough)",
+        "Атрыманне статусу горада"
+    ],
+    "titlehexbin": [
+        "History of Establishing Cities",
+        "Гісторыя заснавання гарадоў"
+    ],
+    "titlerendist": [
+        "Renamings of Soviet age: distribution",
+        "Перайменаванні савецкага перыяду: размеркаванне"
+    ],
+    "titlerenanim": [
+        "Renamings of Soviet age: chronology",
+        "Перайменаванні савецкага перыяду: храналогія"
+    ],
+    "title": [
+        "Place Names of Belarus",
+        "Назвы маёй краіны"
+    ],
+    "labelamount": [
+        "Amount of Renamings",
+        "Колькасць перайменаванняў"
+    ],
+    "labeldistrict": [
+        "district",
+        "раён"
+    ],
+    "labelearlier": [
+        "Earlier",
+        "Раней"
+    ],
+    "labelpersons": [
+        "labelpersons",
+        "чалавек"
+    ],
+    "labelthousand": [
+        "th.",
+        "тыс"
+    ],
+    "labelbeforedot": [
+        "bef.",
+        "да"
+    ],
+    "labelother": [
+        "other",
+        "іншых"
+    ],
+    "labelnative": [
+        "Native",
+        "Родная"
+    ],
+    "labeldomestic": [
+        "Domestic",
+        "Дома"
+    ],
+    "labelyear": [
+        "Year",
+        "Год"
+    ],
+    "labelyeardot": [
+        "yr.",
+        "г."
+    ],
+    "labelest": [
+        "Established",
+        "Заснаваны"
+    ],
+    "labelstatus": [
+        "City status",
+        "Статус горада"
+    ],
+    "labelpop": [
+        "Population",
+        "Насельніцтва"
+    ],
+    "labelquery": [
+        "Query",
+        "Запыт"
+    ],
+    "labelabout": [
+        "About",
+        "Пра праект"
+    ],
+    "labellang": [
+        "Language",
+        "Мова"
+    ],
+    "labelcities": [
+        "Cities",
+        "Гарады"
+    ],
+    "labelmagdeburg": [
+        "Boroughs",
+        "Ратушы"
+    ],
+    "labelcolors": [
+        "«Masonry»",
+        "«Вітраж»"
+    ],
+    "labelrename": [
+        "Renaming",
+        "Перайменаванне"
+    ],
+    "labelstats": [
+        "Stats",
+        "Статыстыка"
+    ],
+    "labelanim": [
+        "Chronology",
+        "Храналогія"
+    ],
+    "labelhexbin": [
+        "Hexbin",
+        "«Соты»"
+    ],
+    "labelterrain": [
+        "Terrain",
+        "Рэльеф"
+    ],
+    "labelrail": [
+        "Railways",
+        "Чыгунка"
+    ],
+    "labelwater": [
+        "Water",
+        "Вада"
+    ],
+    "labelqueries": [
+        "Queries",
+        "Запыты"
+    ],
+    "labelmore": [
+        "More!",
+        "Яшчэ!"
+    ],
+    "labelbeldom": [
+        "Belarusian as Domestic",
+        "Беларуская мова дома"
+    ],
+    "labelrusdom": [
+        "Russian as Domestic",
+        "Руская мова дома"
+    ],
+    "labelbelnat": [
+        "Belarusian as Native",
+        "Беларуская мова родная"
+    ],
+    "labelrusnat": [
+        "Russian as Native",
+        "Руская мова родная"
+    ],
+    "labeldensity": [
+        "Population Density",
+        "Шчыльнасць насельніцтва"
+    ],
+    "tipsearch": [
+        "Type here to search...",
+        "Увядзіце запыт..."
+    ]
+}
