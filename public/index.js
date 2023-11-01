@@ -4,12 +4,14 @@ var lock = 0;
 var op_color = 'yellow';
 var colorschemes = [];
 var locale_code = 1;
+var locale = {};
+var modalAboutLoaded = false;
 var server_url = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + '/';
 var fulltestingapp = window.location.href.includes('full');
 console.log('mode:', fulltestingapp ? 'full' : 'basic');
 var old_ages = [1250, 1569, 1772, 1917, 1991, 2015];
 var old_ages_flags = ['ori.svg', 'gdl-flag.svg', 'rp-flag.svg', 're-flag.svg', 'sov-u-flag.svg', 'bel-flag.svg'];
-var old_ages_names = ['ruthenia', 'vkl', 'korona', 'rmn', 'su', 'by'];
+var old_ages_names = ['nameor', 'namegd', 'namerp', 'namere', 'namesu', 'nameby'];
 var old_ages_colors = ['#377eb8', '#e41a1c', '#ff7f00', /*'#ffff33' '#f781bf'*/ '#a65628', '#984ea3', '#4daf4a'];
 var get_old_age = d3
     .scaleThreshold()
@@ -24,127 +26,87 @@ d3.selection.prototype.moveToFront = function () {
         this.parentNode.appendChild(this);
     });
 };
-
+//  Grand Duchy of Lithuania, Ruthenia and Samogitia
 var queries = {
-    iszki: 'ишки$',
-    q8: 'овка$#щина$',
-    q6: '^лях#^лит#^москал#^ятв#^рус#кривич',
-    q2: 'Пролет#Красн#Октяб#Коммун#Совет#Ленин#киров#дзержин#калинин#ворошилов#чапаев',
-    q5: 'нов[аяоый]{2}',
-    q4: 'велик|больш#мал',
-    q10: 'яскевич',
-    q9: 'вичи$',
-    q3: 'болот',
-    q7: 'ье$',
-    q11: 'бобр#барсук',
-    q13: 'виш.?н#малин',
-    q12: 'бел',
-    q14: 'ре[кч]#озер',
-    q15: '^ив[^а]#^лоз#^верб',
-    q16: 'гора|горк|горье',
-    q17: 'село',
-    q18: 'город',
-    q19: '@красн#чырв',
-    q20: 'овка$',
-};
-var apptext = {
-    locale: ['en', 'be'],
-    ruthenia: ['Old Ruthenia', 'Даўняя Русь'],
-    vkl: ['Grand Duchy', 'ВКЛ'],
-    //  Grand Duchy of Lithuania, Ruthenia and Samogitia
-    korona: ['Commonwealth of Two Nations', 'Рэч Паспалітая'],
-    rmn: ['Russian Empire', 'Расійская імперыя'],
-    su: ['Soviet Union', 'Савецкі Саюз'],
-    by: ['Belarus', 'Беларусь'],
-
-    city_status: ['Status of a City (Borough)', 'Атрыманне статусу горада'],
-    city_est: ['History of Establishing Cities', 'Гісторыя заснавання гарадоў'],
-    ren_hex: ['Renamings of Soviet age: distribution', 'Перайменаванні савецкага перыяду: размеркаванне'],
-    ren_chr: ['Renamings of Soviet age: chronology', 'Перайменаванні савецкага перыяду: храналогія'],
-    title: ['Place Names of Belarus', 'Назвы маёй краіны'],
-    ren_amount: ['Amount of Renamings', 'Колькасць перайменаванняў'],
-    raion: ['district', 'раён'],
-    earlr: ['Earlier', 'Раней'],
-    persons: ['persons', 'чалавек'],
-    thsnd: ['th.', 'тыс'],
-    bef: ['bef.', 'да'],
-    oth: ['other', 'іншых'],
-    ntv: ['Native', 'Родная'],
-    dmst: ['Domestic', 'Дома'],
-    yr: ['Year', 'Год'],
-    yrdot: ['yr.', 'г.'], // A.D.
-    estd: ['Established', 'Заснаваны'],
-    sttus: ['City status', 'Статус горада'],
-    ppshn: ['Population', 'Насельніцтва'],
-
-    btn_query: ['Query', 'Запыт'],
-    contacts: ['Contacts', 'Кантакты'],
-    about: ['About', 'Пра праект'],
-    lang_choice: ['Language', 'Мова'],
-    cit_hist_label: ['Cities', 'Гарады'],
-    cit_magd_label: ['Boroughs', 'Ратушы'],
-    glaze: ['«Masonry»', '«Вітраж»'],
-    names_label: ['Renaming', 'Перайменаванне'],
-    stats_label: ['Stats', 'Статыстыка'],
-    cit_ren: ['Chronology', 'Храналогія'],
-    cit_hex: ['«Hexbin»', '«Соты»'],
-    cit_rel_label: ['Terrain', 'Рэльеф'],
-    cit_rail_label: ['Railways', 'Чыгунка'],
-    cit_wat_label: ['Water', 'Вада'],
-    cit_queries_label: ['Queries', 'Запыты'],
-    home_lang_pc_be: ['Belarusian as Domestic', 'Беларуская мова дома'],
-    home_lang_pc_ru: ['Russian as Domestic', 'Руская мова дома'],
-    nat_lang_pc_be: ['Belarusian as Native', 'Беларуская мова родная'],
-    nat_lang_pc_ru: ['Russian as Native', 'Руская мова родная'],
-    distr_pop: ['Population Density', 'Шчыльнасць насельніцтва'],
-    searchholder: ['Type here to search...', 'Увядзіце запыт...'],
+    q17: { query: 'село', label: ['Village radix', 'Сяло-'] },
+    q18: { query: 'город', label: ['City radix', 'Горад-'] },
+    q3: { query: 'болот', label: ['Swamplands', '«Людзі на балоце»'] },
+    q16: { query: 'гора|горк|горье', label: ['Belarusian mountains', 'Беларускія горы'] },
+    q5: { query: 'нов[аяоый]{2}', label: ['New ones', 'Усё новае'] },
+    q9: { query: 'вичи$', label: ['Patronimic -vich', '-авічы/-овічы/-евічы'] },
+    q2: {
+        query: 'Пролет#Красн#Октяб#Коммун#Совет#Ленин#киров#дзержин#калинин#ворошилов#чапаев',
+        label: ['Soviet names', '«Савецкі Саюз»'],
+    },
+    q14: { query: 'ре[кч]#озер', label: ['River vs lake', 'Край азёр і рэк...'] },
+    q15: { query: '^ив[^а]#^лоз#^верб', label: ['*vьrba, *jьva, *loza = willow', '*vьrba, *jьva, *loza'] },
+    iszki: { query: 'ишки$', label: ['Jana Safarewicz border (-iszki)', 'Granica Jana Safarewicza (-iszki)'] },
+    q8: { query: 'овка$#щина$', label: ['Suffixes -owka vs -schyna', '-оўка/-шчына'] },
+    q6: {
+        query: '^лях#^лит#^москал#^ятв#^рус#кривич',
+        label: ['Lithuania, Ruthenia and other nations', 'Літва, Русь, крывічы, ляхі ды маскалі'],
+    },
+    q4: { query: 'велик|больш#мал', label: ['Big and small', 'Вялікі і малы'] },
+    q10: { query: 'яскевич', label: ['Yaskevichs', 'Яскевічы'] },
+    q7: { query: 'ье$', label: ['Old Slavic *-je suffix', 'Назвы на *-je'] },
+    q11: { query: 'бобр#барсук', label: ['Beaver vs badger', 'Бобр vs барсук'] },
+    q13: { query: 'виш.?н#малин', label: ['Cherry vs Raspberry', 'Вішня vs маліна'] },
+    q12: { query: 'бел', label: ['-bel- = white', '-бел- у Беларусі'] },
+    q19: { query: '@красн#чырв', label: ['Traditional Red and Russian one', '„Красны“ і „чырвоны“'] },
 };
 
-function switchLanguage() {
+function switchLocale() {
     locale_code ^= 1;
-    console.log("locale:", locale_code);
-    if (locale_code) {
-        d3.select(d3.select('.interface_be').node().parentNode).classed('disabled', true);
-        d3.select(d3.select('.interface_en').node().parentNode).classed('disabled', false);
-    } else {
-        d3.select(d3.select('.interface_be').node().parentNode).classed('disabled', false);
-        d3.select(d3.select('.interface_en').node().parentNode).classed('disabled', true);
-    }
-    [
-        'btn_query',
-        'contacts',
-        'about',
-        'lang_choice',
-        'cit_hist_label',
-        'cit_magd_label',
-        'glaze',
-        'names_label',
-        'stats_label',
-        'cit_ren',
-        'cit_hex',
-        'cit_rel_label',
-        'cit_rail_label',
-        'cit_wat_label',
-        'cit_queries_label',
-        'home_lang_pc_be',
-        'home_lang_pc_ru',
-        'nat_lang_pc_be',
-        'nat_lang_pc_ru',
-        'distr_pop',
-    ].forEach(function (d) {
-        d3.selectAll('.' + d).text(l8n(d));
-    });
-
-    d3.select('.req').attr('placeholder', l8n('searchholder'));
-    loadAbout();
+    // console.log("locale:", locale_code);
+    setLocale();
 }
 
+function makeMenu(list, start, end) {
+    var entries = Object.entries(list);
+    if (start || end) {
+        entries = entries.slice(start, end);
+    }
+    return entries.map(function (x) {
+        return `<li role="presentation"><a href="#" class="query ${x[0]}">${x[1].label[locale_code]}</a></li>`
+    }).join("");
+}
+function setLocale() {
+    var be1 = d3.select('.interface_be');
+    var en1 = d3.select('.interface_en');
+
+    if (be1.empty() || en1.empty()) {
+        return;
+    }
+
+    d3.select(be1.node().parentNode).classed('disabled', locale_code);
+    d3.select(en1.node().parentNode).classed('disabled', !locale_code);
+    d3.selectAll('[class^=label]').text(function () {
+        return l8n(d3.select(this).attr('class'));
+    });
+    d3.select('.req').attr('placeholder', l8n('tipsearch'));
+    loadAbout();
+    if (fulltestingapp) {
+        var menu = makeMenu(queries);
+        d3.select('.queries').html(menu);
+    } else {
+        var unwrapped = makeMenu(queries, 0, 7);
+        var wrapped = makeMenu(queries, 7);
+        var more = `<li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+            aria-haspopup="true" aria-expanded="false">
+            <span class="glyphicon glyphicon-heart"></span>
+            <span class="labelqueries">${locale['labelmore'][locale_code]}</span><span class="caret"></span></a>
+        <ul class="dropdown-menu">${wrapped}</ul>
+        </li>`;
+        d3.select('.examples').html(unwrapped + more);
+    }
+}
 function l8n(property) {
     // console.info(property);
-    return apptext[property][locale_code];
+    return locale[property][locale_code];
 }
 function L(s) {
-    return locale_code ? transliterate(s) : s;
+    return locale_code ? s : transliterate(s);
 }
 function transliterate(word) {
     var a = {
@@ -220,7 +182,7 @@ function transliterate(word) {
         І: 'I',
         '-': '‒',
     }; // " ":"∙"
-    return word
+    return word.toString()
         .split('')
         .map(function (char) {
             // return a[char] || char;
@@ -290,7 +252,6 @@ function ImageExist(url) {
     img.src = url;
     return img.height != 0;
 }
-
 function osm_layer_put(where, projection_path, jsonfile, svgclass) {
     d3.json(jsonfile).then(function (data) {
         where
@@ -384,11 +345,11 @@ function city_put(svg, projection, city, number, object_node, citydot_radius, mu
                 uri: server_url,
                 img: city.place_id + city.ext,
                 name: L(hname),
-                text_est: l8n('estd'),
-                text_status: l8n('sttus'),
-                text_ppshn: l8n('ppshn'),
-                yrdot: l8n('yrdot'),
-                text_1k: l8n('thsnd'),
+                text_est: l8n('labelest'),
+                text_status: l8n('labelstatus'),
+                text_labelpop: l8n('labelpop'),
+                labelyeardot: l8n('labelyeardot'),
+                text_1k: l8n('labelthousand'),
                 est_date: city.est_date,
                 magd_date: city.magd_date,
                 pop: city.pop,
@@ -609,8 +570,8 @@ function drawBubble(data, placeholder) {
                         '<div style="font-weight:bold;color:' +
                         d.data.textcolor +
                         ';">' +
-                        d.data.key +
-                        (d.data.mark ? ' ' + l8n('oth') : '&nbsp;&nbsp;&nbsp;' + d.data.values) +
+                        (locale_code ? d.data.key : transliterate(d.data.key)) +
+                        (d.data.mark ? ' ' + l8n('labelother') : '&nbsp;&nbsp;&nbsp;' + d.data.values) +
                         '</div>'
                     );
                 }
@@ -660,7 +621,7 @@ function drawBubble(data, placeholder) {
     node
         .append('text')
         .text(function (d) {
-            return (d.data.mark ? '+' : '') + d.data.key;
+            return (d.data.mark ? '+' : '') + (locale_code ? d.data.key : transliterate(d.data.key));
         })
         .style('font-size', function (d) {
             return Math.min(2 * d.r, ((2 * d.r - 8) / this.getComputedTextLength()) * 24) + 'px';
@@ -972,9 +933,17 @@ function drawPie(data, svg) {
     // relax();
     //setTimeout(relax,5000)
 }
-function renderStats(title, color_sceheme_num, path, districts, placeholder, head, board, bar, pattern) {
+function renderStats(label, color_sceheme_num, path, districts, placeholder, head, board, bar, pattern) {
+    var cols = {
+        labelpop: 'pop',
+        labelbeldom: 'home_lang_pc_be',
+        labelrusdom: 'home_lang_pc_ru',
+        labelbelnat: 'nat_lang_pc_be',
+        labelrusnat: 'nat_lang_pc_ru',
+    };
+    var column = cols[label];
     clean_canvas(placeholder);
-    head.text(l8n(title));
+    head.text(l8n(label));
     var color_range = colorschemes[color_sceheme_num];
     // var color = d3.scale.ordinal()
     // .domain(["6TH", "7TH", "5TH", "4TH"])
@@ -995,7 +964,7 @@ function renderStats(title, color_sceheme_num, path, districts, placeholder, hea
     d3.json('/api/districts.json').then(function (districts_db_data) {
         var domainArray = [];
         for (var i in districts_db_data) {
-            domainArray.push(Number(districts_db_data[i][title]));
+            domainArray.push(Number(districts_db_data[i][column]));
         }
 
         var qcolor = d3.scaleQuantile().range(color_range);
@@ -1033,9 +1002,9 @@ function renderStats(title, color_sceheme_num, path, districts, placeholder, hea
                     return d;
                 });
             //the data objects are the fill colors
-
-            var delim = title === 'pop' ? 1000 : 1;
-            var unit = title === 'pop' ? ' ' + l8n('thsnd') : ' %';
+            // console.log("!!", title);
+            var delim = column === 'pop' ? 1000 : 1;
+            var unit = column === 'pop' ? ' ' + l8n('labelthousand') : ' %';
 
             // LEGEND !!!
             legend
@@ -1051,6 +1020,7 @@ function renderStats(title, color_sceheme_num, path, districts, placeholder, hea
                     // var format = d3.format("0.2f");
                     // return (format(+extent[0]) + "—" + format(+extent[1])).replace(".", ",");
                     var format = d3.format('.0f');
+                    // console.log(d, extent);
                     return (
                         format(Math[i ? 'ceil' : 'floor'](extent[0] / delim)) + '…' + format(Math.ceil(extent[1] / delim)) + unit
                     );
@@ -1119,17 +1089,17 @@ function renderStats(title, color_sceheme_num, path, districts, placeholder, hea
             // // return quantize( );
             // // return thres_color(districts_db_data[osm].pop);
             // // return recolorMap(districts_db_data[osm].pop);
-            // // return recolorMap(districts_db_data[osm].nat_lang_pc_be);
-            // return recolorMap(districts_db_data[osm].home_lang_pc_be);
+            // // return recolorMap(districts_db_data[osm].labelbelnat);
+            // return recolorMap(districts_db_data[osm].labelbeldom);
             // })
             .style('fill', function (d) {
                 // var osm = Math.abs(d.properties["OSM_ID"]);
                 var osm = d.properties.id;
 
                 if (pattern) {
-                    return districts_db_data[osm][title] > 50 ? 'url(#myPattern)' : 'url(#myPattern2)';
+                    return districts_db_data[osm][column] > 50 ? 'url(#myPattern)' : 'url(#myPattern2)';
                 } else {
-                    return recolorMap(districts_db_data[osm][title]);
+                    return recolorMap(districts_db_data[osm][column]);
                 }
             })
             // .attr("class", function(d) {
@@ -1160,17 +1130,17 @@ function renderStats(title, color_sceheme_num, path, districts, placeholder, hea
                     return (
                         '<b>' +
                         // (locale_code ? '': (cdt.name_be + "&nbsp;")) +
-                        (locale_code ? transliterate(cdt.capital_be) : cdt.name_be) +
+                        (locale_code ? cdt.name_be : transliterate(cdt.capital_be)) +
                         '&nbsp;' +
-                        l8n('raion') +
+                        l8n('labeldistrict') +
                         // (locale_code ? ("&nbsp;" + transliterate(cdt.capital_be)) : '') +
                         '</b>' +
                         '<br/>' +
                         cdt.pop +
                         '&nbsp;' +
-                        l8n('persons') +
+                        l8n('labelpersons') +
                         '<br/>' +
-                        l8n('ntv') +
+                        l8n('labelnative') +
                         (locale_code ? '&nbsp;&nbsp;&nbsp;' : '&nbsp;') +
                         '<img src="b91.svg" class="small_flag_inline" />' +
                         '&nbsp;' +
@@ -1180,7 +1150,7 @@ function renderStats(title, color_sceheme_num, path, districts, placeholder, hea
                         '&nbsp;' +
                         format(+cdt.nat_lang_pc_ru) +
                         '<br/>' +
-                        l8n('dmst') +
+                        l8n('labeldomestic') +
                         (locale_code ? '&nbsp;' : '&nbsp;&nbsp;&nbsp;') +
                         '<img src="b91.svg" class="small_flag_inline" />' +
                         '&nbsp;' +
@@ -1196,7 +1166,7 @@ function renderStats(title, color_sceheme_num, path, districts, placeholder, hea
 }
 function renderMagdeburg(projection, placeholder, titler, side, bar, template, quick_mode) {
     clean_canvas(placeholder);
-    titler.text(l8n('city_status'));
+    titler.text(l8n('titlecity'));
 
     var fo_layer = side
         .append('g')
@@ -1266,11 +1236,11 @@ function renderMagdeburg(projection, placeholder, titler, side, bar, template, q
                         uri: server_url,
                         img: d.place_id + d.ext,
                         name: L(hname),
-                        text_est: l8n('estd'),
-                        text_status: l8n('sttus'),
-                        text_ppshn: l8n('ppshn'),
-                        yrdot: l8n('yrdot'),
-                        text_1k: l8n('thsnd'),
+                        text_est: l8n('labelest'),
+                        text_status: l8n('labelstatus'),
+                        text_labelpop: l8n('labelpop'),
+                        labelyeardot: l8n('labelyeardot'),
+                        text_1k: l8n('labelthousand'),
                         est_date: d.est_date,
                         magd_date: d.magd_date,
                         pop: d.pop,
@@ -1425,7 +1395,7 @@ function renderMagdeburg(projection, placeholder, titler, side, bar, template, q
 function renderFounding(projection, placeholder, titler, board, bar, template, quick_mode) {
     clean_canvas(placeholder);
     var container = placeholder.append('g').classed('cities', true);
-    titler.text(l8n('city_est'));
+    titler.text(l8n('titlehexbin'));
     d3.json('/api/cities.json').then(function (grd) {
         board
             .append('g')
@@ -1638,7 +1608,7 @@ function renderHexbin(projection, width, height, svg, titler, board, bar, quick)
 
     var colorize = myScale.interpolate(d3.interpolateLab);
 
-    titler.text(l8n('ren_hex'));
+    titler.text(l8n('titlerendist'));
     var parseDate = d3.timeFormat('%Y').parse;
     d3.json('/api/changes.json').then(function (ren_hg_data) {
         ren_hg_data.forEach(function (d) {
@@ -1821,7 +1791,7 @@ function renderHexbin(projection, width, height, svg, titler, board, bar, quick)
 }
 function renderRenaming(projection, svg, titler, board, bar, quick) {
     clean_canvas(svg);
-    titler.text(l8n('ren_chr'));
+    titler.text(l8n('titlerenanim'));
 
     d3.json('/api/changes.json').then(function (grd) {
         board.style('font', "72px 'Soviet Style',  Arial, sans-serif");
@@ -1848,7 +1818,7 @@ function renderRenaming(projection, svg, titler, board, bar, quick) {
             .range([1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
         function formatCurrency(d) {
-            return l8n('bef') + ' ' + ages[d - 1];
+            return l8n('labelbeforedot') + ' ' + ages[d - 1];
         }
         // var data = d3.nest()
         //     .key(function (d) {
@@ -1906,7 +1876,7 @@ function renderRenaming(projection, svg, titler, board, bar, quick) {
                 .attr('y', 6)
                 .attr('dy', '.71em')
                 .style('text-anchor', 'end')
-                .text(l8n('ren_amount'));
+                .text(l8n('labelamount'));
 
             groot
                 .selectAll('.renamebarchart')
@@ -2043,11 +2013,11 @@ function renderRenaming(projection, svg, titler, board, bar, quick) {
                         '<b>' +
                         d.name_be +
                         '</b><br/>' +
-                        l8n('earlr') +
+                        l8n('labelearlier') +
                         ': ' +
                         d.names_pre_be.replace(/\|/g, ', ') +
                         '<br/>' +
-                        l8n('yr') +
+                        l8n('labelyear') +
                         ': ' +
                         d.ren_date
                     );
@@ -2245,9 +2215,9 @@ function mapdots(projection, svg, board, loaded_data, pack) {
                         ';"><b>' +
                         L(d.name_be) +
                         '</b><br/>' +
-                        (locale_code ? transliterate(d.capital_be) : d.district_be) +
+                        (locale_code ? d.district_be : transliterate(d.capital_be)) +
                         ' ' +
-                        l8n('raion') +
+                        l8n('labeldistrict') +
                         '</div>'
                     );
                 })
@@ -2342,7 +2312,7 @@ function pulse() {
 }
 function clean_canvas(placeholder) {
     lock = 0;
-    d3.select('#head').text(l8n('title'));
+    d3.select('.head').text(l8n('title'));
     placeholder.selectAll('.tower').remove();
     placeholder.selectAll('.citynames').remove();
     placeholder.selectAll('.citydot').remove();
@@ -2392,8 +2362,9 @@ function askdb(svgObject, header, cnv, proj, keyword, title) {
     }
 }
 function loadAbout() {
-    d3.text('/about' + locale_code + '.txt').then(function (data) {
-        d3.select('#div_about').html(data);
+    d3.text('/about' + locale_code + '.html').then(function (data) {
+        d3.select('#ModalAbout').html(data);
+        modalAboutLoaded = true;
     });
 }
 function renderCities(svg, proj, cities) {
@@ -2567,7 +2538,11 @@ function renderBorders(svg, path, width, height, projection, raw1, raw2) {
 function setupMap(files) {
     var [data, data2, data3, template] = files;
     var activeLine;
-    const minus = Math.ceil(d3.select('.header').node().offsetHeight + d3.select('.head').node().offsetHeight + d3.select('.footer').node().offsetHeight + 25);
+    const minus = Math.ceil(
+        d3.select('.header').node().offsetHeight +
+        d3.select('.head').node().offsetHeight +
+        d3.select('.footer').node().offsetHeight
+    );
     var height = document.documentElement.scrollHeight - minus;
     var docWidth = document.documentElement.scrollWidth;
     var width = docWidth > 800 ? 800 : docWidth;
@@ -2589,7 +2564,7 @@ function setupMap(files) {
     var path = d3.geoPath().projection(projection);
     var div = d3.select('.map');
     var new_width = div.style('width');
-    console.log(width, new_width);
+    // console.log(width, new_width);
     var svg = div
         .append('svg')
         // .attr("width", width)
@@ -2650,7 +2625,7 @@ function setupMap(files) {
         activeLine = null;
     }
 
-    console.log('loaded');
+    // console.log('loaded');
     var districts = renderBorders(svg, path, width, height, projection, data, data2);
     // Mustache.parse(template);   // optional, speeds up future uses
     renderCities(svg, projection, data3);
@@ -2679,7 +2654,7 @@ function setupMap(files) {
                         break;
                     case '5':
                         // console.log("stat");
-                        renderStats('home_lang_pc_be', 9, path, districts, svg, head, board, bar);
+                        renderStats('labelbeldom', 9, path, districts, svg, head, board, bar);
                         break;
                     case '6':
                         console.log('stroke');
@@ -2740,40 +2715,43 @@ function setupMap(files) {
         },
         query: function () {
             var id = /(q\d+)/.exec(d3.select(this).attr('class')).shift();
-            askdb(svg, head, board, projection, queries[id], d3.select(this).property('text'));
+            askdb(svg, head, board, projection, queries[id].query, d3.select(this).property('text'));
         },
-        about: function () {
-            $('#myModal').modal('show');
+        labelabout: function () {
+            if (!modalAboutLoaded) {
+                loadAbout();
+            }
+            $('#ModalAbout').modal('show');
         },
         contacts: function () {
             $('#ModalContacts').modal('show');
         },
         interface_be: function () {
-            switchLanguage();
+            switchLocale();
         },
         interface_en: function () {
-            switchLanguage();
+            switchLocale();
         },
         //////////////// extended functions
-        distr_pop: function () {
-            renderStats('pop', 11, path, districts, svg, head, board, bar);
+        labeldensity: function () {
+            renderStats('labelpop', 11, path, districts, svg, head, board, bar);
         },
-        nat_lang_pc_be: function () {
-            renderStats('nat_lang_pc_be', 6, path, districts, svg, head, board, bar);
+        labelbelnat: function () {
+            renderStats('labelbelnat', 6, path, districts, svg, head, board, bar);
         },
-        nat_lang_pc_ru: function () {
-            renderStats('nat_lang_pc_ru', 2, path, districts, svg, head, board, bar);
+        labelrusnat: function () {
+            renderStats('labelrusnat', 2, path, districts, svg, head, board, bar);
         },
-        home_lang_pc_be: function () {
-            renderStats('home_lang_pc_be', 9, path, districts, svg, head, board, bar);
+        labelbeldom: function () {
+            renderStats('labelbeldom', 9, path, districts, svg, head, board, bar);
         },
-        home_lang_pc_ru: function () {
-            renderStats('home_lang_pc_ru', 5, path, districts, svg, head, board, bar);
+        labelrusdom: function () {
+            renderStats('labelrusdom', 5, path, districts, svg, head, board, bar);
         },
         distr_be_ru: function () {
-            renderStats('home_lang_pc_be', 9, path, districts, svg, head, board, bar, true);
+            renderStats('labelbeldom', 9, path, districts, svg, head, board, bar, true);
         },
-        cit_ren: function () {
+        labelanim: function () {
             renderRenaming(projection, svg, head, board, bar);
         },
         cit_magd: function () {
@@ -2782,7 +2760,7 @@ function setupMap(files) {
         cit_hist: function () {
             renderFounding(projection, svg, head, board, bar, template);
         },
-        cit_hex: function () {
+        labelhexbin: function () {
             renderHexbin(projection, width, height, svg, head, board, bar);
         },
     };
@@ -2791,7 +2769,6 @@ function setupMap(files) {
         d3.selectAll('.' + key).on('click', handlers[key]);
     }
 }
-
 function setupApp() {
     // var old_ages_colors_my = ["#3366cc", 	"#dc3912", "#990099", 		"#ffd600", 			"#9e9e9e",  	"#33691e"];
     // var old_ages_colors_orig = ["#3366cc", "#dc3912", "#ff9900", 	"#109618",			 "#990099",  	"#651067", "#3b3eac"
@@ -2824,14 +2801,25 @@ function setupApp() {
         [op_color /*"gray" '#fef0d9'*/, '#fdcc8a', '#fc8d59', '#e34a33', '#b30000'], //10
         ['#f7f7f7', '#cccccc', '#969696', '#636363', '#252525'], //11 cool black-white
     ];
+
+    var language = window.navigator.userLanguage || window.navigator.language;
+    locale_code = +['ru', 'by', 'uk'].includes(language.split('-').shift())
+    console.log(locale_code);
+
     if (fulltestingapp) {
         d3.select('.extendedcontrols').classed('hidden', false);
     } else {
+        d3.text('howto' + locale_code + '.html').then(function (data) {
+            d3.select('#ModalHowTo').html(data);
+        });
         $('#ModalHowTo').modal('show');
         d3.select('.cit_rel_long').classed('hidden', false);
         d3.select('.basiccontrols').classed('hidden', false);
     }
-    switchLanguage();
+    d3.json('locale.json').then(function (data) {
+        locale = data;
+        setLocale();
+    });
     Promise.all([
         d3.json('/data/btop.json'),
         d3.json('/data/districts-topo.json'),
