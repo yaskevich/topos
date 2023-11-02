@@ -7,10 +7,14 @@
 }
 .template_small_flag {
   height: 16px;
+  margin-left: 5px;
 }
 .template_coat_div {
   height: 100%;
   width: 75px;
+}
+.template_coat_div > img {
+  padding: 5px;
 }
 .small_flag_inline {
   width: 18px;
@@ -25,16 +29,13 @@
   shape-rendering: crispEdges;
 }
 .label-text {
-  font: 12px Georgia, serif;
-  fill: #393939;
   pointer-events: none;
+  letter-spacing: -0.5px;
+  font-size: 1rem;
 }
 .label-line {
   stroke-width: 1;
   stroke: #393939;
-  pointer-events: none;
-}
-.pass {
   pointer-events: none;
 }
 .label-circle {
@@ -52,34 +53,13 @@ body {
   /* font: 72px 'Blackadder ITC', Arial, sans-serif; */
   font: 72px 'Almendra SC', Arial, sans-serif;
 }
-.bar_city {
-  font: 48px 'Mistral', Arial, sans-serif;
-}
 .citynames {
   text-anchor: middle;
   font-size: 0.7em;
-  font-family: 'PT Sans Narrow';
 }
-#head {
-  /* font: 20px Georgia, serif; */
-  font-size: 20px;
-  text-transform: uppercase;
-  text-align: center;
-  margin-top: -10px;
-  margin-bottom: 5px;
-}
-#title svg {
-  display: block;
-  margin: auto;
-}
-#title svg text {
-  text-anchor: middle;
-  /* font: 20px Georgia, serif; */
+.head {
   text-transform: uppercase;
 }
-/* .folist {
-  font: 16px Georgia, serif;
-} */
 .folist .left {
   float: left;
   width: 140px;
@@ -93,12 +73,7 @@ body {
   margin: 2px 10px;
   display: inline;
 }
-.unselectable {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+.pass {
   user-select: none;
   cursor: default;
   pointer-events: none;
@@ -151,11 +126,9 @@ body {
 }
 .node:hover circle {
   fill: orange;
-  cursor: pointer;
   cursor: hand;
 }
 .node text {
-  /* font: 24px 'Helvetica Neue', Helvetica, Arial, sans-serif; */
   font-size: 24px;
   text-anchor: middle;
   pointer-events: none;
@@ -165,7 +138,7 @@ body {
   max-width: 75px;
 }
 .d3tooltip {
-  background-color: #fcfcfc;
+  background-color: #f5f0f0;
   border: 1px solid gray;
   padding: 5px;
   height: auto;
@@ -194,15 +167,6 @@ body {
   stroke: #888;
   stroke-linejoin: round;
 }
-ok {
-  fill: #3914af;
-}
-bad {
-  fill: #ffd073;
-}
-svg:title {
-  background-color: yellow;
-}
 .hexagons path {
   stroke: #fff;
 }
@@ -221,23 +185,9 @@ svg:title {
   fill: lightyellow;
   stroke: #888;
 }
-body {
-  background-color: white;
-}
-.footer {
-  border-top: 1px solid #444;
-  padding-top: 20px;
-  margin-top: 20px;
-  color: #999;
-}
-.p {
-  text-align: center;
-  padding-top: 120px;
-}
-.p a {
-  text-decoration: underline;
-  color: blue;
-}
+/* svg {
+  background-color: pink;
+} */
 .drawline {
   fill: none;
   stroke: black;
