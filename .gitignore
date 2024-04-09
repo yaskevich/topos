@@ -1,0 +1,7 @@
+server/package-lock.json
+.env
+data/
+sources/
+node_modules/
+client/
+index1.js
