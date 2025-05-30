@@ -116,28 +116,32 @@ if (process.env.DB_PATH && fs.existsSync(process.env.DB_PATH)) {
     const lang = raw === query ? 'name_ru' : 'name_be';
     const rulesArr = query.split('#');
     // console.log(`raw ${raw} query [${query}] ${lang} ${rulesArr.length}`);
-    if (rulesArr.length > 1) {
-      const regExpArr = rulesArr.map((x) => new RegExp(x, 'i'));
-      data.forEach((datum) => {
-        let group = null;
-        for (let i = 0; i < regExpArr.length; ++i) {
-          if (datum[lang].match(regExpArr[i])) {
-            group = rulesArr[i];
-            break;
+    try {
+      if (rulesArr.length > 1) {
+        const regExpArr = rulesArr.map((x) => new RegExp(x, 'i'));
+        data.forEach((datum) => {
+          let group = null;
+          for (let i = 0; i < regExpArr.length; ++i) {
+            if (datum[lang].match(regExpArr[i])) {
+              group = rulesArr[i];
+              break;
+            }
           }
-        }
-        if (group) {
-          // datum.group = group;
-          result.push({ ...datum, group });
-        }
-      });
-    } else {
-      // God bless JavaScript – \b doesn't work with non-ASCII strings!
-      // if ! is put in the beggining or in the end of the query string
-      // y is a position of ! in the query
-      query = query.replace('!', (x, y) => (y ? '(?=\\s|$)' : '(?<=\\s|^)'));
-      // console.log(query);
-      result = data.filter((x) => x[lang].match(new RegExp(query, 'i')));
+          if (group) {
+            // datum.group = group;
+            result.push({ ...datum, group });
+          }
+        });
+      } else {
+        // God bless JavaScript – \b doesn't work with non-ASCII strings!
+        // if ! is put in the beggining or in the end of the query string
+        // y is a position of ! in the query
+        query = query.replace('!', (x, y) => (y ? '(?=\\s|$)' : '(?<=\\s|^)'));
+        // console.log(query);
+        result = data.filter((x) => x[lang].match(new RegExp(query, 'i')));
+      }
+    } catch (error) {
+      console.log(error.message);
     }
     console.log(raw, result.length);
     res.json(result);
