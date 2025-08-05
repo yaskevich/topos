@@ -11,27 +11,27 @@
   "author": "Alyaxey Yaskevich",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.20.2",
-    "bootstrap": "^5.3.2",
-    "bootstrap-icons": "^1.11.1",
-    "compression": "^1.7.4",
-    "cookie-session": "^2.0.0",
-    "d3": "^7.8.5",
+    "body-parser": "^2.2.0",
+    "bootstrap": "^5.3.7",
+    "bootstrap-icons": "^1.13.1",
+    "compression": "^1.8.1",
+    "cookie-session": "^2.1.1",
+    "d3": "^7.9.0",
     "d3-hexbin": "^0.2.2",
     "d3-tile": "^1.0.0",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
     "jquery": "^3.7.1",
     "mustache": "^4.2.0",
-    "passport": "^0.6.0",
+    "passport": "^0.7.0",
     "passport-local": "^1.0.0",
-    "sqlite": "^5.0.1",
-    "sqlite3": "^5.1.6",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
     "topojson-client": "^3.1.0"
   },
   "devDependencies": {
-    "eslint": "^8.52.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.29.0"
+    "@antfu/eslint-config": "^5.1.0",
+    "eslint": "^9.32.0",
+    "eslint-plugin-import": "^2.32.0"
   }
 }
